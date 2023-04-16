@@ -13,13 +13,9 @@ let long1 = -79.347015;
 let lat2 = 44.389;
 let long2 = -79.69;
 
-// Event listener for the Submit button
-mapButton.addEventListener("click", function (e) {
-	cityName1 = formCity1.value;
-	cityName2 = formCity2.value;
-	console.log(cityName1);
-	console.log(cityName2);
-});
+let marker1;
+let marker2;
+let markersExist = false;
 
 // Initialize a new map
 let map = L.map("emissionsMap").setView([lat1, long1], 13);
@@ -31,10 +27,34 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 		'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
-// Add markers
-let marker1 = L.marker([lat1, long1]).addTo(map);
-let marker2 = L.marker([lat2, long2]).addTo(map);
+// Event listener for the Submit button
+mapButton.addEventListener("click", function (e) {
+	//Check if a marker exists
+	if (markersExist) {
+		// Remove old markers
+		marker1.remove();
+		marker2.remove();
+	}
+	// Set new city name values
+	cityName1 = formCity1.value;
+	cityName2 = formCity2.value;
+	console.log(cityName1);
+	console.log(cityName2);
 
-// Add a popup to the markers showing the city names
-marker1.bindPopup(cityName1).openPopup();
-marker2.bindPopup(cityName2).openPopup();
+	// TODO: Get new city coordinates from API
+	/*
+    lat1;
+    long1;
+    lat2;
+    long2;
+    */
+
+	// Add markers with new coordinates
+	marker1 = L.marker([lat1, long1]).addTo(map);
+	marker2 = L.marker([lat2, long2]).addTo(map);
+
+	// Add a popup to the markers showing the city names
+	marker1.bindPopup(cityName1).openPopup();
+	marker2.bindPopup(cityName2).openPopup();
+	markersExist = true;
+});
